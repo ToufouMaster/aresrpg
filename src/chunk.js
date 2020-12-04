@@ -1,3 +1,9 @@
+import Anvil from 'prismarine-provider-anvil'
+
+import { version } from './settings.js'
+
+const AnvilWorld = Anvil.Anvil(version)
+
 export const chunk_position = (value) => Math.floor(value / 16)
 
 export function same_chunk(first_position, second_position) {
@@ -10,4 +16,10 @@ export function same_chunk(first_position, second_position) {
   const same_z = first_chunk_z === second_chunk_z
 
   return same_x && same_z
+}
+
+export function chunks(region_folder) {
+  const provider = new AnvilWorld(region_folder)
+
+  return provider
 }

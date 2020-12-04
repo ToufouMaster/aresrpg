@@ -4,7 +4,7 @@ import UUID from 'uuid-1345'
 import { chunk_position } from '../chunk.js'
 import { version } from '../settings.js'
 
-import { mobs } from './mobs.js'
+import { Types as mobs } from './types.js'
 const mcData = minecraftData(version)
 
 const color_by_type = {

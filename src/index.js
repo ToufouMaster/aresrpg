@@ -10,7 +10,7 @@ import { update_experience } from './experience.js'
 import { scan } from './iterables.js'
 import logger from './logger.js'
 import login from './login.js'
-import { register_mobs, spawn_mob } from './mobs/spawn_mob.js'
+import { register_mobs } from './mobs.js'
 import { send_resource_pack } from './resource_pack.js'
 import {
   reduce_plugin_channels,
@@ -22,6 +22,8 @@ import { register_traders, spawn_merchants } from './trade/spawn_villagers.js'
 import { open_trade, register_trades } from './trade/trade.js'
 import { reduce_view_distance } from './view_distance.js'
 import { floor1 } from './world.js'
+import { update_clients } from './mobs/client.js'
+import { mob_damage } from './mobs/damage.js'
 
 const log = logger(import.meta)
 
@@ -50,7 +52,7 @@ const initial_state = ({ entity_id, world }) => ({
     37: { type: 'bronze_coin', count: 10 },
     38: { type: 'menitrass_100', count: 1 },
   }),
-  game_mode: 2,
+  game_mode: 1,
   experience: 0,
 })
 
@@ -71,6 +73,8 @@ function transform_action(action) {
   ].reduce((intermediate, fn) => fn(intermediate), action)
 }
 
+const update_mobs = update_clients(initial_world)
+
 async function observe_client(context) {
   /* Observers that handle the protocol part.
    * They get the client and should map it to minecraft protocol */
@@ -78,7 +82,8 @@ async function observe_client(context) {
   await send_resource_pack(context)
   login(context)
   update_chunks(context)
-  spawn_mob(context)
+  update_mobs(context)
+  mob_damage(context)
   spawn_merchants(context)
   open_trade(context)
   update_experience(context)
