@@ -10,8 +10,8 @@ function tmp(state, action) {
     ...state,
     position: {
       ...state.position,
-      x: state.position.x + 0.2
-    }
+      ...action,
+    },
   }
 }
 
