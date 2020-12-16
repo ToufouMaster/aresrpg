@@ -16,14 +16,20 @@ function reconstruct_path(end) {
   return path.reverse()
 }
 
-export function pathfinding({ start, is_target, neighbors, heuristic, equal }) {
+export async function pathfinding({
+  start,
+  is_target,
+  neighbors,
+  heuristic,
+  equal,
+}) {
   const open = [{ cost: 0, node: start }]
   const closed = []
 
   const insert = sorted_insert.bind(null, open, 'cost')
 
   while (open.length >= 0) {
-    const head = open_set.shift()
+    const head = open.shift()
 
     if (is_target(head.node))
       return {
@@ -32,7 +38,7 @@ export function pathfinding({ start, is_target, neighbors, heuristic, equal }) {
         path: reconstruct_path(head),
       }
 
-    for (const neighbor of neighbors(head.node)) {
+    for (const neighbor of await neighbors(head.node)) {
       const cost = head.cost + heuristic(head.node, neighbor)
       const visited = closed.some(
         ({ node, cost: closed_cost }) =>

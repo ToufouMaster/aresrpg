@@ -39,6 +39,7 @@ const initial_world = [
   events: new EventEmitter(),
   next_entity_id: 0,
   next_window_id: 1, // 0 is the player inventory
+  get: () => initial_world,
 })
 
 const initial_state = ({ entity_id, world }) => ({
